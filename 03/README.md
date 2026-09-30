@@ -1,3 +1,8 @@
+# Semaine 03/16
+
+- [ ] Classe et objet
+- [ ] Visibilité (public, protégé, privé)
+- [ ] Héritage
 
 ## Visibilité
 
@@ -98,3 +103,11 @@ class Ball() {}; // Définition d'une classe Ball
 Ball ball; // Création d'un objet de type Ball (instance)
 int i = 42; // Créer un objet de type int (instance)
 ```
+
+## Exercice
+
+Déclarez une dans un nouveau fichier C++ une class `Animal` avec les attributs `age` et `weight` et les méthodes `eat()` et `sleep()`. Créez ensuite une classe `Dog` qui hérite de la classe `Animal` et ajoutez une méthode `bark()`. Enfin, créez un objet de type `Dog` et appelez ses méthodes.
+
+Faite pareil avec la classe `Cat` qui hérite de la classe `Animal` et ajoutez une méthode `meow()`. Créez un objet de type `Cat` et appelez ses méthodes.
+
+`bark` fait `"Woof!" et `meow` fait "Meow!". `sleep` fait `"Zzz..."` et `eat` fait `"Miam..."`.
