@@ -13,6 +13,7 @@ Exemples de la semaine :
 | Réimplémentation d'un `std::array` avec un template de classe | [Array.cpp](Array.cpp) |
 | `std::deque` / `std::vector` | [vector.cpp](vector.cpp) |
 | Surcharge d'opérateurs sur une classe `Point` | [operator.cpp](operator.cpp) |
+| Solution de l'exercice sur les températures (`std::vector`) | [exercise.cpp](exercise.cpp) |
 
 ## Templates
 
@@ -132,3 +133,65 @@ int main() {
 `a + 42` est résolu par la fonction membre `MyInt::operator+(int)`, mais `42 + a` ne peut pas l'être : l'opérande de gauche est un `int`, on ne peut donc pas lui ajouter de méthode. Il faut une fonction libre `operator+(int, MyInt)`, qui doit bien sûr retourner une valeur (le corps est vide dans l'exemple).
 
 Pour pouvoir écrire `a + 42` avec un littéral, les paramètres doivent être des références constantes (`const MyInt &`, `const int &`) ou des valeurs : une référence non-`const` (`int &`) ne peut pas se lier à un temporaire comme `42`. Par ailleurs, il faut marquer les opérateurs `const` quand ils ne modifient pas l'objet.
+
+Voici un petit exercice faisable en **12 minutes** avec `std::vector`.
+
+### Exercice — Gestion rapide de températures
+
+Écris un programme C++ qui :
+
+1. Demande à l’utilisateur de saisir **5 températures** entières.
+2. Les stocke dans un `std::vector<int>`.
+3. Affiche toutes les températures.
+4. Affiche :
+   - la température minimale,
+   - la température maximale,
+   - la moyenne.
+5. Supprime la dernière température avec `pop_back()` puis réaffiche le `vector`.
+
+Exemple attendu :
+
+```text
+Entrez 5 températures :
+12 8 15 20 10
+
+Températures : 12 8 15 20 10
+Min : 8
+Max : 20
+Moyenne : 13
+
+Après suppression :
+12 8 15 20
+```
+
+Squelette de départ :
+
+```cpp
+#include <iostream>
+#include <vector>
+
+int main() {
+    std::vector<int> temperatures;
+
+    // 1. Lire 5 températures avec push_back()
+
+    // 2. Afficher le vector
+
+    // 3. Trouver min, max et moyenne
+
+    // 4. Supprimer le dernier élément avec pop_back()
+
+    // 5. Réafficher
+
+    return 0;
+}
+```
+
+Solution : [exercise.cpp](exercise.cpp). Points à retenir :
+
+- `push_back()` dans une boucle pour remplir le `vector`, `pop_back()` pour retirer le dernier élément ;
+- `std::min_element` / `std::max_element` retournent des **itérateurs**, d'où le `*` pour obtenir la valeur ;
+- `std::accumulate` (de `<numeric>`) somme les éléments. On part de `0.0` (un `double`) pour que la moyenne ne soit pas tronquée par une division entière ;
+- le paramètre de `print` est une `const std::vector<int> &` : pas de copie, et la fonction ne peut pas modifier le conteneur.
+
+**Bonus si tu termines avant les 12 minutes :** remplace `std::vector` par `std::deque` et teste `push_front()` pour ajouter une température au début.
