@@ -195,3 +195,7 @@ Solution : [exercise.cpp](exercise.cpp). Points à retenir :
 - le paramètre de `print` est une `const std::vector<int> &` : pas de copie, et la fonction ne peut pas modifier le conteneur.
 
 **Bonus si tu termines avant les 12 minutes :** remplace `std::vector` par `std::deque` et teste `push_front()` pour ajouter une température au début.
+
+## Constructeurs
+
+Consultez l'exemple [constructor.cpp](constructor.cpp)
