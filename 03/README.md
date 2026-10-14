@@ -1,14 +1,16 @@
 # Semaine 03/16
 
-- [ ] Classe et objet
-- [ ] Visibilité (public, protégé, privé)
+- [ ] Classes et objets
+- [ ] Visibilité (publique, protégée, privée)
 - [ ] Héritage
 
 ## Visibilité
 
-- Public
-- Protégé
-- Privé
+Les membres d'une classe peuvent avoir trois niveaux de visibilité :
+
+- public (`public`) ;
+- protégé (`protected`) ;
+- privé (`private`).
 
 ```cpp
 // Classe avec membres publics par défaut
@@ -23,17 +25,17 @@ class Class {
     int method() { return attribute * 2; }
 };
 
-// Les mots clés public, protected et private
+// Les mots-clés public, protected et private
 class Class {
     public:
         int attribute;
         int method() { return attribute * 2; }
-}
+};
 struct Class {
     private:
         int attribute;
         int method() { return attribute * 2; }
-}
+};
 
 class Human {
     public:
@@ -47,6 +49,8 @@ class Human {
 ```
 
 ## Héritage
+
+La classe `Student` hérite de `Human` : elle accède à ses membres publics et protégés, mais pas à ses membres privés.
 
 ```cpp
 class Human {
@@ -79,7 +83,10 @@ int main() {
     Human human;
     human.eat();
     human.think(); // Erreur : think() est protégé
+}
 ```
+
+Le même héritage en Python :
 
 ```python
 class Human:
@@ -95,10 +102,10 @@ class Student(Human):
 ```
 
 
-## Class versus Object
+## Classe et objet
 
 ```cpp
-class Ball() {}; // Définition d'une classe Ball
+class Ball {}; // Définition d'une classe Ball
 
 Ball ball; // Création d'un objet de type Ball (instance)
 int i = 42; // Créer un objet de type int (instance)
@@ -106,8 +113,8 @@ int i = 42; // Créer un objet de type int (instance)
 
 ## Exercice
 
-Déclarez une dans un nouveau fichier C++ une class `Animal` avec les attributs `age` et `weight` et les méthodes `eat()` et `sleep()`. Créez ensuite une classe `Dog` qui hérite de la classe `Animal` et ajoutez une méthode `bark()`. Enfin, créez un objet de type `Dog` et appelez ses méthodes.
+Dans un nouveau fichier C++, déclarez une classe `Animal` dotée des attributs `age` et `weight` et des méthodes `eat()` et `sleep()`. Créez ensuite une classe `Dog` qui hérite d'`Animal` et ajoutez-lui une méthode `bark()`. Enfin, créez un objet de type `Dog` et appelez ses méthodes.
 
-Faite pareil avec la classe `Cat` qui hérite de la classe `Animal` et ajoutez une méthode `meow()`. Créez un objet de type `Cat` et appelez ses méthodes.
+Faites de même avec une classe `Cat`, qui hérite elle aussi d'`Animal` et possède une méthode `meow()`. Créez un objet de type `Cat` et appelez ses méthodes.
 
-`bark` fait `"Woof!" et `meow` fait "Meow!". `sleep` fait `"Zzz..."` et `eat` fait `"Miam..."`.
+Chaque méthode affiche un message : `bark()` affiche `"Woof!"`, `meow()` affiche `"Meow!"`, `sleep()` affiche `"Zzz..."` et `eat()` affiche `"Miam..."`.

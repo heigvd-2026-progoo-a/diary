@@ -22,5 +22,5 @@ int main() {
     Point q(3,4);
     Point z;
     z = p.add(q);
-    z = (p + q) * 42
+    z = (p + q) * 42;
 }

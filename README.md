@@ -1,0 +1,119 @@
+# Cours de Programmation orientée objet en C++
+
+## Plan du cours
+
+
+- [x] Introduction au concept objet
+- [ ] Les six piliers du paradigme objet
+  - [x] Objet
+  - [x] Classe
+  - [x] Héritage
+  - [ ] Polymorphisme
+  - [ ] Abstraction
+  - [ ] Encapsulation
+- [ ] Du C au C++
+  - [ ] Apports du C++ par rapport au C
+    - [ ] Références, `const`, surcharge de fonctions, valeurs par défaut
+    - [ ] `new` et `delete` face à `malloc` et `free`
+    - [x] Espaces de noms (`namespace`)
+    - [ ] Déduction de type (`auto`, `decltype`)
+  - [ ] Flux de données
+    - [x] `std::cin`, `std::cout`, `std::cerr`
+    - [ ] Flux fichiers (`fstream`) et flux de chaînes (`stringstream`)
+  - [ ] Interopérabilité C et C++
+    - [ ] `extern "C"` et décoration des noms
+    - [ ] Intégration de bibliothèques C dans un projet C++
+- [ ] Classes et objets
+  - [ ] Rappel sur les types abstraits de données (ADT)
+  - [ ] Définition d'une classe
+    - [x] Attributs et méthodes
+    - [x] Visibilité : `public`, `protected`, `private`
+    - [x] Méthodes `const`
+    - [ ] Membres statiques
+  - [ ] Cycle de vie d'un objet
+    - [x] Constructeurs et listes d'initialisation
+    - [x] Destructeur
+    - [ ] Constructeur de copie et opérateur d'affectation
+    - [ ] Copie superficielle et copie profonde
+    - [ ] Sémantique de déplacement (`std::move`)
+    - [ ] Règle des trois, des cinq et du zéro
+  - [ ] Fonctions et classes amies (`friend`)
+  - [x] Surcharge d'opérateurs
+    - [x] Écrire une surcharge de `operator+`, `operator==`, `operator[]`, etc.
+    - [x] Surcharge de `operator<<` et `operator>>`
+- [ ] Robustesse et gestion des ressources
+  - [ ] Gestion des exceptions
+    - [ ] `try`, `catch`, `throw`
+    - [ ] Hiérarchie `std::exception`
+    - [ ] Garanties d'exception et `noexcept`
+  - [ ] Idiome RAII
+  - [ ] Pointeurs intelligents
+    - [ ] `std::unique_ptr` et transfert de propriété
+    - [ ] `std::shared_ptr` et comptage de références
+    - [ ] `std::weak_ptr` et cycles de références
+    - [ ] `std::make_unique` et `std::make_shared`
+- [ ] Héritage et polymorphisme
+  - [ ] Héritage
+    - [x] Héritage simple
+    - [ ] Ordre de construction et de destruction
+    - [ ] Héritage multiple et problème du losange
+    - [ ] Héritage virtuel
+  - [ ] Polymorphisme
+    - [ ] Méthodes virtuelles et redéfinition (`override`, `final`)
+    - [ ] Destructeur virtuel
+    - [ ] Méthodes virtuelles pures et classes abstraites
+    - [ ] Interfaces
+  - [ ] Liaison dynamique
+    - [ ] Fonctionnement interne : vtable et vptr
+    - [ ] Coût en mémoire et en temps d'exécution
+    - [ ] Impact dans un contexte temps réel
+- [ ] Programmation générique et bibliothèque standard
+  - [ ] Templates
+    - [x] Templates de fonctions
+    - [x] Templates de classes
+    - [ ] Spécialisation totale et partielle
+    - [ ] Paramètres non typés
+    - [ ] Notions de concepts (C++20)
+  - [ ] Bibliothèque standard (STL)
+    - [x] Conteneurs séquentiels : `vector`, `array`, `deque`, `list`
+    - [ ] Conteneurs associatifs : `map`, `set`, `unordered_map`, `unordered_set`
+    - [ ] Adaptateurs : `stack`, `queue`, `priority_queue`
+    - [ ] Itérateurs et leurs catégories
+    - [ ] Algorithmes standards : `sort`, `find`, `transform`, `accumulate`, etc.
+    - [ ] Complexité algorithmique des conteneurs et algorithmes
+  - [ ] Fonctions anonymes
+    - [ ] Syntaxe des lambdas
+    - [ ] Captures par valeur et par référence
+    - [ ] `std::function` et usage avec les algorithmes STL
+- [ ] Conception orientée objet
+  - [ ] Modélisation UML
+    - [ ] Diagrammes de classes
+      - [ ] Classes, attributs, méthodes, visibilités
+      - [ ] Associations, multiplicités
+      - [ ] Agrégation et composition
+      - [ ] Généralisation et réalisation d'interface
+    - [ ] Usage en phase de conception
+    - [ ] Usage en phase de documentation
+  - [ ] Patrons de conception
+    - [ ] Patrons de création
+      - [ ] Singleton
+      - [ ] Fabrique (Factory)
+    - [ ] Patrons comportementaux
+      - [ ] Observateur (Observer)
+      - [ ] Visiteur (Visitor)
+    - [ ] Autres patrons abordés en cours
+- [ ] Qualité logicielle et outillage
+  - [ ] Tests unitaires et fonctionnels
+    - [ ] Prise en main de Google Test ou Catch2
+    - [ ] Rédaction de cas de test et d'assertions
+    - [ ] Organisation des tests dans le projet
+  - [ ] Gestion de version avec Git
+    - [ ] Commits, branches, fusions
+    - [ ] Travail collaboratif sur dépôt distant
+
+## Références
+
+- [Cours C++](https://heig-tin-info.github.io/handbook/course-cpp/cpp/)
+- [refcard C99/C11](https://github.com/heig-tin-info/refcard)
+- [refcard C++](https://github.com/heig-tin-info/refcard-cpp)
+- [Polycopié INFO1 et INFO2](https://github.com/heig-tin-info/handout)

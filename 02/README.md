@@ -1,21 +1,21 @@
 # Semaine 02/16
 
-- [ ] Espaces de noms (namespace)
-- [ ] Surcharge paramétrique (overloading)
-- [ ] Left/Right value (lvalue/rvalue)
-- [ ] Références (references)
+- [ ] Espaces de noms (*namespaces*)
+- [ ] Surcharge paramétrique (*overloading*)
+- [ ] Valeurs à gauche et à droite (*lvalue* / *rvalue*)
+- [ ] Références (*references*)
 
-## Mangling 
+## Décoration de noms (*mangling*)
 
-Consiste à transformer le nom d'une fonction en un nom unique pour le linker en ajoutant un préfixe à la fonction. 
+Le *mangling* consiste à transformer le nom d'une fonction en un nom unique pour l'éditeur de liens (*linker*), en lui ajoutant un préfixe.
 
-On le fait massivement en C car il n'y a pas d'espaces de noms.
+En C, faute d'espaces de noms, on recourt massivement à cette technique en préfixant soi-même le nom des fonctions :
 
 ```c
 int int_add(int, int);
 ```
 
-En C++ on peut utiliser un espace de nom.
+En C++, on peut utiliser un espace de noms à la place :
 
 ```cpp
 namespace math {
@@ -40,7 +40,7 @@ int main() {
 
 ## Surcharge paramétrique (overloading)
 
-Lorsque plusieurs fonctions portent le même nom mais ont des signatures différentes, le compilateur choisit celle qui correspond aux arguments passés.
+Lorsque plusieurs fonctions portent le même nom mais ont des signatures différentes, le compilateur choisit celle qui correspond aux arguments transmis lors de l'appel.
 
 ```cpp
 #include <iostream>
@@ -50,16 +50,19 @@ double add(double a, double b) { return a + b; }
 
 int main() {
     int a = add(2, 3);
-    int b = add(2.5, 3.5);
-    double c = add(2.5, 5); // Ambiguous
+    double b = add(2.5, 3.5);
+    double c = add(2.5, 5); // Ambigu
     std::cout << a << " " << b << " " << c << std::endl;
 }
 ```
 
 ## Paramètres optionnels
 
+Un paramètre peut recevoir une valeur par défaut, utilisée lorsque l'argument est omis à l'appel :
+
 ```cpp
 #include <iostream>
+#include <string>
 
 void greet(std::string name = "World") {
     std::cout << "Hello, " << name << "!" << std::endl;
@@ -72,13 +75,15 @@ int main() {
 }
 ```
 
-## Référence
+## Références
 
-Une référence c'est un alias pour une variable existante. Elle doit être initialisée lors de sa déclaration et ne peut pas être réassignée à une autre variable.
+Une référence est un alias d'une variable existante. Elle doit être initialisée dès sa déclaration et ne peut plus, ensuite, désigner une autre variable.
 
-Derrière le rideau, c'est un pointeur constant mais il doit impérativement être initialisé à une variable existante.
+En coulisses, une référence se comporte comme un pointeur constant, à ceci près qu'elle doit impérativement être initialisée avec une variable existante.
 
 ```cpp
+#include <iostream>
+
 void display(int i) {
     std::cout << "Value: " << i << std::endl;
 }
@@ -94,6 +99,6 @@ int main() {
 }
 ```
 
-## Left/Right value (lvalue/rvalue)
+## Valeurs à gauche et à droite (*lvalue* / *rvalue*)
 
-Une lvalue (left value) est une expression qui fait référence à un emplacement mémoire identifiable. Une rvalue (right value) est une expression qui ne fait pas référence à un emplacement mémoire identifiable, souvent une variable temporaire ou une valeur littérale.
+Une *lvalue* (*left value*) est une expression qui désigne un emplacement mémoire identifiable. Une *rvalue* (*right value*) est une expression qui ne désigne aucun emplacement mémoire identifiable : il s'agit le plus souvent d'une valeur temporaire ou d'une valeur littérale.
