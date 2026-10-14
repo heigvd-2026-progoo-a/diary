@@ -70,6 +70,18 @@ Pour être complet, voici la liste des éléments que le compilateur peut géné
 
 Les deux derniers concernent le déplacement, que nous verrons plus tard dans le cours.
 
+NOTE:
+Si on déclare un constructeur avec un paramètre, automatiquement le constructeur par défaut
+sera supprimé aussi. Souvent on s'en rend compte à la compilation parce que plus rien ne compile. 
+
+La règle des 3: Si on a besoin de décalrer un destructeur, c'est probablement qu'on a besoin aussi de redéclarer le constructeur par copie et l'opérateur d'affectation. 
+
+Par exemple l'exemple: [default2.cpp](default2.cpp)
+
+## Concept RAII
+
+Le RAII est une technique de C++ qui confie la gestion d'une ressource (un fichier, un bloc de mémoire) à un objet. Quand l'objet est créé, il obtient la ressource, et quand il disparaît, en sortant du bloc de code où il a été déclaré, son destructeur la libère automatiquement. Le programmeur n'a donc plus besoin de penser à fermer le fichier ou à rendre la mémoire : le langage s'en charge, même si une erreur interrompt le programme en cours de route. C'est un peu comme une porte qui se referme d'elle-même derrière vous, quelle que soit la manière dont vous quittez la pièce.
+
 ## Narrowing
 
 Puisque nous parlons de constructeurs, c'est le bon moment pour introduire la notion de *narrowing* (réduction de type). Il s'agit d'une conversion de type qui peut entraîner une perte d'information, par exemple passer d'un `int` à un `char`. Depuis C++11, le langage offre un moyen de s'en protéger.
