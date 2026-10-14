@@ -1,8 +1,8 @@
 # Semaine 03/16
 
-- [ ] Classes et objets
-- [ ] Visibilité (publique, protégée, privée)
-- [ ] Héritage
+- [x] Classes et objets
+- [x] Visibilité (publique, protégée, privée)
+- [x] Héritage
 
 ## Visibilité
 

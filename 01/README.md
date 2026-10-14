@@ -1,21 +1,22 @@
 # Semaine 01/16
 
-- [ ] C++ est un sur-ensemble (*superset*) de C.
-- [ ] Il a été inventé par Bjarne Stroustrup en 1979.
-- [ ] Il a été normalisé par l'ISO en 1998 (ISO/IEC 14882:1998).
-- [ ] C'est un sur-ensemble, certes, mais il n'est pas entièrement compatible avec C.
-- [ ] C++ apporte le paradigme objet.
-- [ ] Les six étages de la programmation orientée objet :
-   1. Objet
-   2. Classe
-   3. Héritage
-   4. Polymorphisme
-   5. Abstraction
-   6. Encapsulation
-- [ ] L'espace de noms `std::` (bibliothèque standard).
-- [ ] La documentation de référence du C++ : <https://en.cppreference.com/w/>.
+- [x] C++ est un sur-ensemble (*superset*) de C.
+- [x] Il a été inventé par Bjarne Stroustrup en 1979.
+- [x] Il a été normalisé par l'ISO en 1998 (ISO/IEC 14882:1998).
+- [x] C'est un sur-ensemble, certes, mais il n'est pas entièrement compatible avec C.
+- [x] C++ apporte le paradigme objet.
+- [x] Les six étages de la programmation orientée objet :
+- [x] L'espace de noms `std::` (bibliothèque standard).
+- [x] La documentation de référence du C++ : <https://en.cppreference.com/w/>.
 
 ## Les six étages de la programmation orientée objet
+
+1. Objet
+2. Classe
+3. Héritage
+4. Polymorphisme
+5. Abstraction
+6. Encapsulation
 
 ![Les six étages de la programmation orientée objet](steps.png)
 

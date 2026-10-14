@@ -2,7 +2,7 @@
 
 - [x] Templates (de base)
 - [x] Conteneurs séquentiels de la STL
-- [ ] Surcharge d'opérateurs
+- [x] Surcharge d'opérateurs
 
 Exemples de la semaine :
 

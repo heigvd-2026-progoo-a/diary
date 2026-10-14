@@ -1,9 +1,9 @@
 # Semaine 02/16
 
-- [ ] Espaces de noms (*namespaces*)
-- [ ] Surcharge paramétrique (*overloading*)
-- [ ] Valeurs à gauche et à droite (*lvalue* / *rvalue*)
-- [ ] Références (*references*)
+- [x] Espaces de noms (*namespaces*)
+- [x] Surcharge paramétrique (*overloading*)
+- [x] Valeurs à gauche et à droite (*lvalue* / *rvalue*)
+- [x] Références (*references*)
 
 ## Décoration de noms (*mangling*)
 
