@@ -1,52 +1,64 @@
 # Semaine 06/16
 
-- [ ] Polymorphisme
-  - [ ] Dynamique (vtables)
-  - [ ] Static
-    - [ ] Surcharge paramétrique
-    - [ ] Templates
+- [x] Interfaces
+- [x] Méthodes virtuelles
+- [x] Polymorphisme
+  - [x] Dynamique (vtables)
+  - [x] Statique
+    - [x] Surcharge (ad hoc)
+    - [x] Templates (paramétrique)
 
 ## Héritage
 
-Rappelons le concept d'héritage en programmation objet. L'héritage est un mécanisme qui permet de créer une nouvelle classe à partir d'une classe existante. La nouvelle classe, appelée **classe dérivée**, hérite des membres (attributs et méthodes) de la classe existante, appelée **classe de base**. Cela permet de réutiliser le code et de créer des hiérarchies de classes et ainsi d'éviter la duplication de code.
+Rappelons le concept d'héritage en programmation orientée objet. L'héritage permet de créer une nouvelle classe à partir d'une classe existante. La nouvelle classe, appelée **classe dérivée**, hérite des membres (attributs et méthodes) de la classe existante, appelée **classe de base**. On réutilise ainsi le code existant, on évite de le dupliquer et on organise les classes en hiérarchies.
 
-Dans l'exemple suivant on défini une classe de base `Animal` et une classe dérivée `Cat`:
+Dans l'exemple suivant, on définit une classe de base `Animal` et une classe dérivée `Cat` :
 
 ```cpp
-class Animal { void eat(); }; // classe de base
+class Animal {               // classe de base
+public:
+    void eat();
+};
 
-class Cat : public Animal { void meow(); }; // classe dérivée
+class Cat : public Animal {  // classe dérivée
+public:
+    void meow();
+};
 ```
 
-Tout animal peut manger, mais un chat peut en plus miauler. On peut donc créer un chat qui *hérite* de la méthode `eat` et de sa propre méthode `meow`:
+Tout animal peut manger, mais un chat peut en plus miauler. Un `Cat` *hérite* donc de la méthode `eat` d'`Animal` et possède en plus sa propre méthode `meow` :
 
 ```cpp
 Cat cat;
-cat.eat(); // hérité de Animal
+cat.eat();  // hérité de Animal
 cat.meow(); // défini dans Cat
 ```
 
-En C++ il y a une classification de l'héritage qui permet de définir le niveau d'accès aux membres hérités. Il existe trois types d'héritage: public, protected et private. C'est assez spécifique à C++ et presque aucun autre langage de programmation propose cette granularité. Néanmoins voici ce que deviennent les membres hérités:
+> Attention : dans une `class`, les membres sont `private` par défaut. Sans le `public:`, l'appel `cat.eat()` serait refusé par le compilateur.
 
-| Type d'héritage | public | protected | private |
-|----------------|--------|-----------|---------|
-| public         | public | protected | private |
-| protected      | protected | protected | private |
-| private        | private | private | private |
+En C++, on précise un **type d'héritage** (`public`, `protected` ou `private`) qui détermine ce que deviennent, dans la classe dérivée, les membres hérités. C'est assez spécifique au C++ : presque aucun autre langage ne propose cette granularité. Le tableau se lit ainsi : la ligne indique le type d'héritage, la colonne le niveau d'accès du membre dans la classe de base.
 
-Dans la vaste majorité des cas si ce n'est le 100 pourcent du temps, l'héritage est public. Il est très rare de vouloir cacher des méthodes héritées à la classe dérivée.
+| Type d'héritage | membre `public` | membre `protected` | membre `private` |
+|-----------------|-----------------|--------------------|------------------|
+| `public`        | public          | protected          | inaccessible     |
+| `protected`     | protected       | protected          | inaccessible     |
+| `private`       | private         | private            | inaccessible     |
 
-## Spécificateur de fonction
+Notez que les membres `private` de la classe de base ne sont **jamais** accessibles depuis la classe dérivée, quel que soit le type d'héritage : ils existent bien dans l'objet, mais seule la classe de base peut y toucher.
 
-En C++, il existe une syntaxe nommée "spécificateur de fonction" qui permet de définir un attachement particulier à une fonction. Il existe trois possibilités:
+Dans la très grande majorité des cas, l'héritage est `public` : un `Cat` *est un* `Animal` et doit offrir au monde extérieur tout ce qu'offre un `Animal`. Il est très rare de vouloir cacher aux utilisateurs de la classe dérivée les méthodes qu'elle a héritées.
 
-| Syntaxe | Nom | Signification |
-|---------|-----|----------------|
-| `= 0` | `pure-specifier` | Déclare une fonction virtuelle pure |
-| `= default` | `explicitly-defaulted function` | Demande au compilateur de générer l'implémentation par défaut |
-| `= delete` | `deleted function` | Interdit l'utilisation d'une fonction |
+## Spécificateurs de fonction
 
-Par exemple
+En C++, on peut terminer la déclaration d'une méthode par une indication spéciale qui modifie son statut. Il existe trois possibilités :
+
+| Syntaxe     | Nom (norme C++)                 | Signification                                                  |
+|-------------|---------------------------------|----------------------------------------------------------------|
+| `= 0`       | *pure-specifier*                | Déclare une méthode virtuelle pure (sans implémentation ici)   |
+| `= default` | *explicitly-defaulted function* | Demande au compilateur de générer l'implémentation par défaut  |
+| `= delete`  | *deleted function*              | Interdit l'utilisation de la fonction                          |
+
+Par exemple :
 
 ```cpp
 class Animal {
@@ -58,19 +70,25 @@ public:
 };
 ```
 
-Dans cette classe on supprime volontairement le comportement par défaut du constructeur de copie. Cela signifie que l'on ne peut pas copier un objet de type `Animal`. Le constructeur par défaut est explicitement noté comme tel. Enfin le plus étrange des trois, c'est le `= 0` qui n'est autorisé que coinjointement avec le mot clé `virtual`.
+Dans cette classe :
 
-Il dit que la méthode `sleep` n'a pas le droit d'exister pas dans la classe `Animal` mais qu'elle doit exister quand même pour chaque animal. Un `Animal` est donc une classe abstraite car elle ne peut pas être instanciée (`Animal a;` est interdit, car un de ses comportement n'est pas défini). À quoi est-ce que cela sert ?
+- le constructeur par défaut est explicitement demandé au compilateur (`= default`) ;
+- le constructeur de copie est volontairement supprimé (`= delete`) : on ne peut pas copier un `Animal` ;
+- la méthode `sleep` est déclarée avec `= 0`. C'est le plus étrange des trois, et il n'est autorisé que conjointement avec le mot-clé `virtual`.
 
-C'est très utile lors de l'héritage, mais avant de voir cela nous devons définir ce qu'est une interface.
+Le `= 0` signifie que la méthode `sleep` n'a **pas d'implémentation** dans la classe `Animal`, mais que tout animal concret devra en fournir une. Comme un de ses comportements n'est pas défini, `Animal` ne peut pas être instanciée : `Animal a;` est interdit. On dit que `Animal` est une **classe abstraite**.
+
+À quoi cela sert-il ? C'est très utile avec l'héritage, mais il faut d'abord comprendre ce que signifie le mot-clé `virtual`.
 
 ## Fonctions virtuelles
 
-En C++, le mot clé `virtual` peut être utilisé devant une méthode pour indiquer que cette méthode est spéciale. Si l'on s'interesse à l'étymologie, *Virtuel* vient du latin scolastique *virtualis*, dérivé de *virtus* : la force, la capacité de produire un effet. Chez les scolastiques héritiers d'Aristote, est virtuel ce qui existe en puissance et non en acte:
+En C++, le mot-clé `virtual` placé devant une méthode indique que cette méthode est spéciale : elle pourra être **redéfinie** par les classes dérivées, et c'est la version de la classe réelle de l'objet qui sera appelée.
+
+Un détour par l'étymologie éclaire le choix du mot. *Virtuel* vient du latin scolastique *virtualis*, dérivé de *virtus* : la force, la capacité de produire un effet. Chez les scolastiques héritiers d'Aristote, est virtuel ce qui existe en puissance et non en acte :
 
 > Le gland contient virtuellement le chêne : le chêne n'est pas encore là, mais tout ce qu'il faut pour qu'il advienne l'est.
 
-En pratique, déclarer une méthode virtuelle pure, ici `eat`, signifie que l'on ne sait pas comment un animal mange, mais que l'on sait qu'il mange. On peut donc déclarer une méthode `feed` qui prend un animal et lui demande de manger. Le comportement concret de la méthode `eat` sera défini dans les classes dérivées:
+En pratique, déclarer `eat` comme méthode virtuelle pure signifie que l'on ne sait pas *comment* un animal mange, mais que l'on sait *qu'il* mange. On peut donc écrire une fonction `feed` qui reçoit n'importe quel animal et lui demande de manger. Le comportement concret de `eat` sera défini dans les classes dérivées :
 
 ```cpp
 struct Animal {
@@ -81,14 +99,16 @@ struct Cat : Animal {
     void eat() override { /* actualisation concrète */ }
 };
 
-void feed(Animal& a) { a.eat(); }  // l'appel est en puissance
+void feed(Animal& a) { a.eat(); }  // l'appel est « en puissance »
 ```
 
-On utilise volontiers à partir de C++11 le mot clé `override` qui n'a aucun autre effet que de signaler à l'utilisateur que la méthode `eat` est une surcharge d'une méthode virtuelle de la classe de base. Si `eat` n'est pas virtuelle dans la classe de base, le compilateur émettra une erreur. Cela permet d'éviter des erreurs de surcharge par inadvertance.
+Depuis C++11, on ajoute volontiers le mot-clé `override` après une méthode qui **redéfinit** une méthode virtuelle de la classe de base. Il rend l'intention explicite pour le lecteur, et surtout il permet au compilateur de vérifier : si la classe de base ne contient aucune méthode virtuelle de même signature (faute de frappe dans le nom, paramètre différent, `virtual` oublié…), le compilateur émet une erreur au lieu de créer silencieusement une nouvelle méthode.
+
+> Vocabulaire : ne confondez pas **redéfinition** (*override*, remplacer dans une classe dérivée une méthode virtuelle de la base) et **surcharge** (*overload*, plusieurs fonctions de même nom avec des paramètres différents, voir plus bas).
 
 ### Fonctionnement interne des fonctions virtuelles
 
-On peut se demander quel est la nécessité de devoir déclarer une méthode vérituelle, on pourrait très bien écrire:
+On peut se demander pourquoi il faut déclarer une méthode virtuelle. Ne pourrait-on pas simplement écrire :
 
 ```cpp
 struct Animal {
@@ -102,21 +122,24 @@ struct Cat : Animal {
 void feed(Animal& a) { a.eat(); }
 ```
 
-Or du point de vue du compilateur, au moment de la traduction du C++ en assembleur il sait:
+Mettons-nous à la place du compilateur au moment où il traduit `feed` en assembleur. Il sait seulement :
 
-1. Que `feed` prend une référence vers un `Animal` en paramètre
-2. Que `Animal` a une méthode `eat`
+1. que `feed` reçoit une référence vers un `Animal` ;
+2. qu'`Animal` possède une méthode `eat`.
 
-Il n'est pas en capacité de déduire que l'objet passé est en fait un `Cat`. En mémoire l'instance de `Cat` n'est qu'une adresse mémoire sans contenu. Le compilateur n'a pas le choix que d'appeler l'implémentation `Animal::eat` et non `Cat::eat`:
+Il ne peut pas savoir quel objet sera passé à `feed` lors de l'exécution : un `Animal`, un `Cat`, ou un autre animal défini plus tard, dans un autre fichier. Concrètement, `feed` ne reçoit qu'une adresse mémoire, et rien dans l'objet n'indique son type réel. Le compilateur n'a donc pas d'autre choix que d'appeler `Animal::eat`, choisi d'après le type déclaré du paramètre :
 
 ```cpp
 Cat cat;
 feed(cat); // affiche "Animal eats"
 ```
 
-En revanche, si la méthode `eat` est déclarée virtuelle, le compilateur va générer un mécanisme de dispatch dynamique. Il va créer une table de pointeurs de fonctions (*vtables*) qui va contenir les adresses des méthodes virtuelles. Chaque classe dérivée aura sa propre vtable. Ainsi, lorsque l'on appelle `a.eat()`, le programme va regarder dans la vtable de l'objet réel (ici `Cat`) pour trouver l'adresse de la méthode à exécuter.
+En revanche, si la méthode `eat` est déclarée `virtual`, le compilateur met en place un mécanisme de **dispatch dynamique** :
 
-Lorsque la méthode d'un objet contenant des méthodes virtuelles est appelées, plutôt que de directement exécuter la méthode correspondante, le programme va chercher dans la vtable de l'objet pour trouver l'adresse de la méthode à exécuter. Cela permet d'avoir un comportement **polymorphe**, où le même appel de méthode peut avoir des comportements différents selon le type réel de l'objet :
+- pour chaque classe possédant des méthodes virtuelles, il crée une **vtable** (*virtual table*), une table contenant les adresses des méthodes virtuelles de cette classe. `Animal` a sa vtable, `Cat` a la sienne ;
+- chaque objet d'une telle classe contient, en plus de ses attributs, un pointeur caché vers la vtable de sa classe réelle.
+
+Lors de l'appel `a.eat()`, le programme ne saute donc plus directement vers une fonction fixée à la compilation : il suit le pointeur de l'objet vers sa vtable, puis y lit l'adresse de la méthode à exécuter. Le même appel peut ainsi produire des comportements différents selon le type réel de l'objet : c'est un comportement **polymorphe**.
 
 ```cpp
 struct Animal {
@@ -127,9 +150,9 @@ struct Cat : Animal {
     void eat() override { std::cout << "Cat eats" << std::endl; }
 };
 
-// Le dispatch est ici dynamique. Il coûte deux indirections mémoire:
-// 1. On récupère l'adresse de la vtable de l'objet
-// 2. On récupère l'adresse de la méthode à exécuter dans la vtable (Cat::eat())
+// Le dispatch est ici dynamique. Il coûte deux indirections mémoire :
+// 1. on lit dans l'objet l'adresse de sa vtable ;
+// 2. on lit dans la vtable l'adresse de la méthode à exécuter (ici Cat::eat).
 void feed(Animal& a) { a.eat(); }
 ```
 
@@ -142,9 +165,9 @@ feed(cat); // affiche "Cat eats"
 
 ## Interfaces
 
-En programmation orientée objet, une interface est un type de classe qui définit un ensemble de méthodes que les classes dérivées doivent implémenter. C'est une sorte de contrat qui garantit que les classes qui réalisent l'interface respectent un certain comportement. C'est notament utile lorsque plusieurs étuipees de développemnt travaille sur un projet et doivent s'aligner sur un comportement commun.
+En programmation orientée objet, une **interface** définit un ensemble de méthodes que les classes qui la réalisent doivent implémenter. C'est une sorte de contrat : toute classe qui réalise l'interface garantit offrir ces comportements. C'est notamment utile lorsque plusieurs équipes de développement travaillent sur un même projet et doivent s'accorder sur un comportement commun.
 
-Imaginons que nous réalisons un logiciel qui doit pouvoir imprimer des documents. Imaginons aussi un fabricant d'imprimante. Quelle est l'interface entre ces deux entités ? Le logiciel doit pouvoir envoyer l'ordre d'impression à l'imprimante qui doit lui offrir une méthode pour recevoir cet ordre. De la même manière une imprimante peut avoir différents format de papier, le logiciel peut demander quels sont les formats supportés et elle doit pouvoir changer le format par exemple. L'interface serait donc la suivante:
+Imaginons que nous développions un logiciel capable d'imprimer des documents, et imaginons un fabricant d'imprimantes. Quelle est l'interface entre ces deux parties ? Le logiciel doit pouvoir envoyer un ordre d'impression à l'imprimante, qui doit donc offrir une méthode pour le recevoir. De même, une imprimante accepte différents formats de papier : le logiciel doit pouvoir lui demander lesquels elle supporte, puis choisir celui à utiliser. L'interface serait donc la suivante :
 
 ```cpp
 struct Printer {
@@ -154,23 +177,20 @@ struct Printer {
 };
 ```
 
-Il y a deux éléments nouveau. D'une part le mot clé `virtual`, mais aussi le `= 0` à la fin de chaque méthode.
+On retrouve ici les deux éléments vus plus haut : chaque méthode est `virtual` et se termine par `= 0`. Le C++ n'a pas de mot-clé `interface` comme Java ou C# : une interface est simplement une classe abstraite dont toutes les méthodes sont virtuelles pures. `Printer` ne fait rien par elle-même ; c'est au fabricant d'écrire une classe dérivée (par exemple `class LaserPrinter : public Printer`) qui implémente ces trois méthodes. Le logiciel, lui, ne manipule qu'un `Printer&` et fonctionne avec n'importe quelle imprimante.
 
 ## Polymorphisme
 
-La finalité des mécanismes abordés jusqu'à présent est de permettre le polymorphisme. Le polymorphisme est la capacité d'une fonction ou d'une méthode à se comporter différemment selon le type de l'objet sur lequel elle est appelée. Il existe deux types de polymorphisme:
+La finalité des mécanismes vus jusqu'ici est de permettre le **polymorphisme** : la capacité d'un même appel de fonction ou de méthode à se comporter différemment selon le type des objets concernés. On distingue deux familles, selon le moment où le choix de la fonction à exécuter est fait :
 
-1. le polymorphisme statique.
-2. le polymorphisme dynamique.
-
-En effet le compilateur peut déterminer à la compilation quelle méthode doit être appelée en fonction du type de l'objet:
+1. le polymorphisme **statique** : le choix est fait par le compilateur, à la compilation ;
+2. le polymorphisme **dynamique** : le choix est fait pendant l'exécution du programme.
 
 ### Polymorphisme statique
 
-Dans le cas de la **surcharge**, le comportement de `add` est polymorphique, le compilateur choisit la bonne version de la fonction à appeler en fonction des types des arguments passés. Cela se fait à la compilation et ne coûte donc rien en temps d'exécution.
+Dans le cas de la **surcharge**, `add` a un comportement polymorphe : le compilateur choisit la bonne version de la fonction en fonction des types des arguments. Ce choix est fait à la compilation et ne coûte donc rien à l'exécution.
 
 ```cpp
-
 int add(int a, int b) { return a + b; }
 double add(double a, double b) { return a + b; }
 
@@ -180,27 +200,28 @@ int main() {
 }
 ```
 
-On appelle cela du polymorphisme **Ad-hoc** signifiant *pour ceci* ou *à cet effet*.
+On parle de polymorphisme **ad hoc** (latin : *pour ceci*, *à cet effet*), car il faut écrire une version spécifique pour chaque type.
 
-Un autre cas de polymorphisme statique est le polymorphisme paramétrique réalisé avec les templates:
+Un autre cas de polymorphisme statique est le polymorphisme **paramétrique**, réalisé en C++ avec les templates. On n'écrit qu'une seule fois le code, en laissant le type en paramètre (`T`), et le compilateur génère lui-même une version par type utilisé :
 
 ```cpp
 template <typename T>
 T add(T a, T b) { return a + b; }
 
 int main() {
-    int x = add(1, 2);        // appel de add<int>
-    double y = add(1.0, 2.0); // appel de add<double>
+    int x = add(1, 2);        // le compilateur génère et appelle add<int>
+    double y = add(1.0, 2.0); // le compilateur génère et appelle add<double>
 }
 ```
 
 ### Polymorphisme dynamique
 
-Imaginons une collection d'animaux que l'on appelle un `zoo`. On peut vouloir nourrir tous les animaux du zoo. Le polymorphisme dynamique permet d'appeler la méthode `eat` sur chaque animal sans se soucier de son type concret. Le comportement réel de `eat` sera déterminé à l'exécution en fonction du type réel de l'objet.
+Imaginons une collection d'animaux que l'on appelle un `zoo`, et que l'on veuille nourrir tous ses animaux. Le polymorphisme dynamique permet d'appeler `eat` sur chaque animal sans se soucier de son type concret : la version de `eat` réellement exécutée est déterminée à l'exécution, via la vtable, en fonction du type réel de chaque objet.
 
 ```cpp
 struct Animal {
-    virtual void eat() = 0; // méthode virtuelle pure
+    virtual ~Animal() = default; // indispensable pour détruire via un Animal*
+    virtual void eat() = 0;      // méthode virtuelle pure
 };
 
 struct Cat : Animal {
@@ -217,7 +238,13 @@ int main() {
     zoo.push_back(new Dog());
 
     for (Animal* animal : zoo) {
-        animal->eat(); // appel polymorphique
+        animal->eat(); // appel polymorphe : "Cat eats" puis "Dog eats"
+    }
+
+    for (Animal* animal : zoo) {
+        delete animal; // chaque new doit avoir son delete
     }
 }
 ```
+
+Le vecteur ne contient que des `Animal*`, mais chaque appel à `eat` exécute la bonne version. Ce choix ne peut pas être fait à la compilation : dans un vrai programme, le contenu du zoo pourrait dépendre d'une saisie de l'utilisateur ou d'un tirage aléatoire (voir [cats-dogs.cpp](cats-dogs.cpp)).
