@@ -155,3 +155,69 @@ struct Printer {
 ```
 
 Il y a deux éléments nouveau. D'une part le mot clé `virtual`, mais aussi le `= 0` à la fin de chaque méthode.
+
+## Polymorphisme
+
+La finalité des mécanismes abordés jusqu'à présent est de permettre le polymorphisme. Le polymorphisme est la capacité d'une fonction ou d'une méthode à se comporter différemment selon le type de l'objet sur lequel elle est appelée. Il existe deux types de polymorphisme:
+
+1. le polymorphisme statique.
+2. le polymorphisme dynamique.
+
+En effet le compilateur peut déterminer à la compilation quelle méthode doit être appelée en fonction du type de l'objet:
+
+### Polymorphisme statique
+
+Dans le cas de la **surcharge**, le comportement de `add` est polymorphique, le compilateur choisit la bonne version de la fonction à appeler en fonction des types des arguments passés. Cela se fait à la compilation et ne coûte donc rien en temps d'exécution.
+
+```cpp
+
+int add(int a, int b) { return a + b; }
+double add(double a, double b) { return a + b; }
+
+int main() {
+    int x = add(1, 2);        // appel de add(int, int)
+    double y = add(1.0, 2.0); // appel de add(double, double)
+}
+```
+
+On appelle cela du polymorphisme **Ad-hoc** signifiant *pour ceci* ou *à cet effet*.
+
+Un autre cas de polymorphisme statique est le polymorphisme paramétrique réalisé avec les templates:
+
+```cpp
+template <typename T>
+T add(T a, T b) { return a + b; }
+
+int main() {
+    int x = add(1, 2);        // appel de add<int>
+    double y = add(1.0, 2.0); // appel de add<double>
+}
+```
+
+### Polymorphisme dynamique
+
+Imaginons une collection d'animaux que l'on appelle un `zoo`. On peut vouloir nourrir tous les animaux du zoo. Le polymorphisme dynamique permet d'appeler la méthode `eat` sur chaque animal sans se soucier de son type concret. Le comportement réel de `eat` sera déterminé à l'exécution en fonction du type réel de l'objet.
+
+```cpp
+struct Animal {
+    virtual void eat() = 0; // méthode virtuelle pure
+};
+
+struct Cat : Animal {
+    void eat() override { std::cout << "Cat eats" << std::endl; }
+};
+
+struct Dog : Animal {
+    void eat() override { std::cout << "Dog eats" << std::endl; }
+};
+
+int main() {
+    std::vector<Animal*> zoo;
+    zoo.push_back(new Cat());
+    zoo.push_back(new Dog());
+
+    for (Animal* animal : zoo) {
+        animal->eat(); // appel polymorphique
+    }
+}
+```
