@@ -1,0 +1,36 @@
+# Le nom diffère de celui du fragment installé (« heiglogo ») : le registre
+# TeXSmith rend le fragment déjà enregistré sous un nom donné, si bien qu'une
+# copie locale homonyme serait ignorée au profit du plugin. Les clefs du front
+# matter (heiglogo.color, heiglogo.left, heiglogo.top) restent les mêmes.
+name = "heiglogo-gutter"
+description = "Logo HEIG-VD sur la première page, en haut à gauche. Copie locale du fragment installé, avec le calage (left, top) réglable depuis le front matter pour ménager une gouttière de reliure."
+
+[[files]]
+path = "heiglogo.sty"
+type = "package"
+output = "heiglogo"
+
+[[files]]
+path = "heiglogo.jinja.tex"
+type = "inline"
+slot = "extra_packages"
+
+[attributes.heiglogo_color]
+default = false
+type = "boolean"
+sources = ["heiglogo.color", "heiglogo_color"]
+description = "Afficher le logo en couleur (rouge HEIG-VD)."
+
+[attributes.heiglogo_left]
+default = "1cm"
+type = "string"
+format = "raw"
+sources = ["heiglogo.left"]
+description = "Distance du logo au bord gauche de la feuille. 17mm = 10mm de marge plus 7mm de gouttière."
+
+[attributes.heiglogo_top]
+default = "1cm"
+type = "string"
+format = "raw"
+sources = ["heiglogo.top"]
+description = "Distance du logo au bord supérieur de la feuille."

@@ -248,3 +248,59 @@ int main() {
 ```
 
 Le vecteur ne contient que des `Animal*`, mais chaque appel à `eat` exécute la bonne version. Ce choix ne peut pas être fait à la compilation : dans un vrai programme, le contenu du zoo pourrait dépendre d'une saisie de l'utilisateur ou d'un tirage aléatoire (voir [cats-dogs.cpp](cats-dogs.cpp)).
+
+## Smart Pointer
+
+```cpp
+template <class T>
+class SmartPointer {
+    private:
+        T* p;
+    public:
+    SmartPointer(T* p) : p(p) {}
+    ~SmartPointer() { delete p; }
+
+    Foo* operator->() { return p; }
+
+    SmartPointer(SmartPointer &other) = delete;
+    auto operator=(SmartPointer &other) = delete;
+}
+
+Foo* f = new Foo();
+
+delete f;
+
+SmartPointer sp(new Foo());
+sp->bar();
+
+#include <memory>
+
+std::unique_ptr<Foo> up = std::make_unique<Foo>();
+
+std::unique_ptr<Foo> up2 = up;
+
+
+std::vector<std::unique_ptr<Foo>> s;
+s.push_back(std::make_unique<Foo>());
+
+```
+
+## Héritage des constructeurs
+
+En C++ les constructeurs ne sont pas hérités et ils doivent obligatoirement être redéfinis dans chaque classe dérivée. Imaginons une classe qui prend un entier et une classe dérivée qui utilise les mêmes paramètres. Vous devez redéfinir le constructeur à la main. La notation using vous permet de simplifier l'écriture:
+
+```cpp
+struct Number {
+    Number(int n) : n(n) {}
+  private:
+    int n;
+};
+
+struct MagicNumer: public Number {
+# if 0 
+  MagicNumber(int n) : Number(n) {}
+# else
+  using Number::Number
+# endif
+};
+```

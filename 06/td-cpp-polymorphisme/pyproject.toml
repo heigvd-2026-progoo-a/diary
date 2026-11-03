@@ -1,0 +1,10 @@
+[project]
+name = "td-cpp-polymorphisme"
+version = "0.1.0"
+description = "Travail dirigé C++ : interfaces et composition d'interfaces"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "texsmith>=0.9.3",
+    "texsmith-fragment-heig-logo>=0.0.2",
+]

@@ -1,0 +1,55 @@
+name = "docid"
+description = "Numéro de document en haut de page, aligné sur le logo HEIG-VD et calé sur la bordure droite."
+
+[[files]]
+path = "docid.jinja.tex"
+type = "inline"
+slot = "extra_packages"
+
+[attributes.docid_text]
+default = ""
+type = "string"
+format = "raw"
+sources = ["docid.text", "document-id", "document_id", "id"]
+description = "Texte affiché. Par défaut l'identifiant déclaré en tête du document (document-id)."
+
+[attributes.docid_prefix]
+default = ""
+type = "string"
+format = "raw"
+sources = ["docid.prefix"]
+description = "Mention placée devant l'identifiant, par exemple « Réf. »."
+
+[attributes.docid_top]
+default = "10mm"
+type = "string"
+format = "raw"
+sources = ["docid.top"]
+description = "Distance au bord supérieur ; la valeur par défaut est celle du logo."
+
+[attributes.docid_right]
+default = "10mm"
+type = "string"
+format = "raw"
+sources = ["docid.right"]
+description = "Distance au bord droit ; 10mm reprend en miroir la marge gauche du logo."
+
+[attributes.docid_style]
+default = "\\sffamily\\bfseries"
+type = "string"
+format = "raw"
+sources = ["docid.style"]
+description = "Commandes de fonte appliquées au bloc."
+
+[attributes.docid_color]
+default = "black"
+type = "string"
+format = "raw"
+sources = ["docid.color"]
+description = "Couleur du texte, nom xcolor."
+
+[attributes.docid_everypage]
+default = false
+type = "boolean"
+sources = ["docid.everypage"]
+description = "Répéter l'identifiant sur toutes les pages plutôt que sur la seule page de titre."

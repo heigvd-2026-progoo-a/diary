@@ -1,0 +1,20 @@
+%% docid — identifiant du document, ancré au coin supérieur droit de la page.
+%% Le calage reprend celui du logo HEIG-VD : même distance au bord supérieur,
+%% et une distance au bord droit qui reprend en miroir sa marge gauche. Le bloc
+%% est aligné par son coin nord-est, donc son sommet coïncide avec celui du logo.
+\BLOCK{ if docid_text }
+\usepackage{eso-pic}
+\usepackage{tikz}
+\newcommand{\texsmithDocIdBox}{%
+  \begin{tikzpicture}[remember picture,overlay,inner sep=0pt,outer sep=0pt]
+    \node[anchor=north east,align=right,text=\VAR{docid_color}]
+      at ([xshift=-\VAR{docid_right},yshift=-\VAR{docid_top}] current page.north east)
+      {\VAR{docid_style}{}\BLOCK{ if docid_prefix }\VAR{docid_prefix}~\BLOCK{ endif }\VAR{docid_text}};
+  \end{tikzpicture}%
+}
+\BLOCK{ if docid_everypage }
+\AddToShipoutPictureBG{\texsmithDocIdBox}
+\BLOCK{ else }
+\AddToShipoutPictureBG*{\texsmithDocIdBox}
+\BLOCK{ endif }
+\BLOCK{ endif }
