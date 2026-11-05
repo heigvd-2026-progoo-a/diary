@@ -335,9 +335,9 @@ Au sein d'un diagramme de cas d'utilisation, on peut également représenter des
 
 Voici quelques exemples:
 
-![Aéroport](https://www.uml-diagrams.org/examples/use-case-example-airport.png)
+![Aéroport](assets/use-case-airport.png)
 
-![Psycho](https://corporate-assets.lucid.co/co/af8977ba-dfac-40a8-8e0a-d4e4429ee5a3.jpg?height=528&width=525)
+![Psycho](assets/use-case-psycho.jpg)
 
 ## P =? NP
 
