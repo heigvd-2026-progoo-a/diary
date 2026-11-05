@@ -93,8 +93,8 @@ En revanche, l'héritage multiple d'interfaces pose peu de problèmes : une inte
 
 On retiendra que :
 
-- on évite autant que possible l'héritage multiple d'implémentations, en lui préférant la composition ;
-- on s'autorise l'héritage multiple d'interfaces.
+- on évite autant que possible l'héritage multiple d'implémentations;
+- on s'autorise la composition d'interfaces
 
 ### Mixins
 
