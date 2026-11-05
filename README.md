@@ -8,13 +8,13 @@
   - [x] Objet
   - [x] Classe
   - [x] Héritage
-  - [ ] Polymorphisme
+  - [x] Polymorphisme
   - [ ] Abstraction
   - [ ] Encapsulation
 - [ ] Du C au C++
   - [ ] Apports du C++ par rapport au C
     - [ ] Références, `const`, surcharge de fonctions, valeurs par défaut
-    - [ ] `new` et `delete` face à `malloc` et `free`
+    - [x] `new` et `delete` face à `malloc` et `free`
     - [x] Espaces de noms (`namespace`)
     - [ ] Déduction de type (`auto`, `decltype`)
   - [ ] Flux de données
@@ -33,10 +33,10 @@
   - [ ] Cycle de vie d'un objet
     - [x] Constructeurs et listes d'initialisation
     - [x] Destructeur
-    - [ ] Constructeur de copie et opérateur d'affectation
+    - [x] Constructeur de copie et opérateur d'affectation
     - [ ] Copie superficielle et copie profonde
     - [ ] Sémantique de déplacement (`std::move`)
-    - [ ] Règle des trois, des cinq et du zéro
+    - [x] Règle des trois, des cinq et du zéro
   - [ ] Fonctions et classes amies (`friend`)
   - [x] Surcharge d'opérateurs
     - [x] Écrire une surcharge de `operator+`, `operator==`, `operator[]`, etc.
@@ -55,16 +55,16 @@
 - [ ] Héritage et polymorphisme
   - [ ] Héritage
     - [x] Héritage simple
-    - [ ] Ordre de construction et de destruction
-    - [ ] Héritage multiple et problème du losange
-    - [ ] Héritage virtuel
+    - [x] Ordre de construction et de destruction
+    - [x] Héritage multiple et problème du losange
+    - [x] Héritage virtuel
   - [ ] Polymorphisme
     - [ ] Méthodes virtuelles et redéfinition (`override`, `final`)
     - [ ] Destructeur virtuel
-    - [ ] Méthodes virtuelles pures et classes abstraites
-    - [ ] Interfaces
+    - [x] Méthodes virtuelles pures et classes abstraites
+    - [x] Interfaces
   - [ ] Liaison dynamique
-    - [ ] Fonctionnement interne : vtable et vptr
+    - [x] Fonctionnement interne : vtable et vptr
     - [ ] Coût en mémoire et en temps d'exécution
     - [ ] Impact dans un contexte temps réel
 - [ ] Programmation générique et bibliothèque standard
@@ -81,14 +81,14 @@
     - [ ] Itérateurs et leurs catégories
     - [ ] Algorithmes standards : `sort`, `find`, `transform`, `accumulate`, etc.
     - [ ] Complexité algorithmique des conteneurs et algorithmes
-  - [ ] Fonctions anonymes
-    - [ ] Syntaxe des lambdas
-    - [ ] Captures par valeur et par référence
-    - [ ] `std::function` et usage avec les algorithmes STL
+  - [x] Fonctions anonymes
+    - [x] Syntaxe des lambdas
+    - [x] Captures par valeur et par référence
+    - [x] `std::function` et usage avec les algorithmes STL
 - [ ] Conception orientée objet
   - [ ] Modélisation UML
     - [ ] Diagrammes de classes
-      - [ ] Classes, attributs, méthodes, visibilités
+      - [x] Classes, attributs, méthodes, visibilités
       - [ ] Associations, multiplicités
       - [ ] Agrégation et composition
       - [ ] Généralisation et réalisation d'interface

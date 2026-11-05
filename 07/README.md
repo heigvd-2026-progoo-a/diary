@@ -1,15 +1,16 @@
 # Semaine 07/16
 
-- [ ] Héritage multiple
+- [x] Héritage multiple
   - [x] Problème du diamant
   - [x] Héritage virtuel
   - [x] Composition versus héritage multiple
-  - [ ] Mixins
-- [ ] Closures/Lambda
-  - [ ] Pointeurs de fonction
+  - [x] Mixins
+- [x] Closures/Lambda
+  - [x] Pointeurs de fonction
   - [x] Fonctions anonymes en C++
   - [x] Closures
-  - [ ] `std::function`
+  - [x] `std::function`
+- [x] Diagramme de cas d'utilisation
 - [x] Aparté : P =? NP
 
 ## Héritage multiple
@@ -318,6 +319,25 @@ int main() {
 }
 ```
 
+## Diagramme de cas d'utilisation
+
+Parmis les diagrammes UML qui se découpent en deux catégories : les diagrammes structurels et les diagrammes comportementaux, le diagramme de cas d'utilisation est un diagramme comportemental. Il permet de représenter les interactions entre un système et ses utilisateurs (ou acteurs) sous forme de cas d'utilisation.
+
+Il est très pratique en début de projet pour identifier les fonctionnalités principales du système et les besoins des utilisateurs. Il force l'architecte à se concentrer sur les interactions externes plutôt que sur les détails internes de l'implémentation.
+
+Il se compose de trois éléments principaux :
+
+- les acteurs, représentés par des bonhommes stylisés, qui interagissent avec le système ;
+- les cas d'utilisation, représentés par des ovales, qui décrivent les fonctionnalités offertes par le système ;
+- les relations, représentées par des lignes, qui relient les acteurs aux cas d'utilisation qu'ils déclenchent.
+
+Au sein d'un diagramme de cas d'utilisation, on peut également représenter des relations entre les cas d'utilisation eux-mêmes, comme l'inclusion (un cas d'utilisation inclut un autre) ou l'extension (un cas d'utilisation peut être étendu par un autre).
+
+Voici quelques exemples:
+
+![Aéroport](https://www.uml-diagrams.org/examples/use-case-example-airport.png)
+
+![Psycho](https://corporate-assets.lucid.co/co/af8977ba-dfac-40a8-8e0a-d4e4429ee5a3.jpg?height=528&width=525)
 
 ## P =? NP
 
