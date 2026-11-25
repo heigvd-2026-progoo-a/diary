@@ -6,6 +6,7 @@
   - [x] Singleton
 - [x] Pointeurs intelligents : `std::shared_ptr` et `std::weak_ptr`
 - [x] Opérateur de déplacement
+- [ ] Parseur (culture générale)
 
 ## Patrons de conception
 
@@ -224,3 +225,73 @@ On a déjà croisé le déplacement sans le nommer :
 - Un `std::unique_ptr` ne peut pas être copié (il n'y aurait plus un unique propriétaire), mais il peut être **déplacé** : `auto up2 = std::move(up);` transfère la propriété, et `up` devient vide.
 
 Le déplacement permet donc d'éviter des copies inutiles et améliore les performances, en particulier pour les objets qui gèrent de grosses ressources.
+
+## Parseur
+
+Lorsqu'on doit lire un texte structuré (JSON, HTML, XML, une expression mathématique, du code C ou Python…), on ne parcourt pas les caractères à la main avec des `if` imbriqués : le code deviendrait vite illisible et truffé de cas oubliés. On confie plutôt le texte à un **parseur** (*parser*, analyseur syntaxique), qui le découpe et le structure en suivant un ensemble de règles appelé **grammaire**.
+
+Une grammaire décrit la **forme** que doit avoir un texte valide, de la même manière que la grammaire française décrit comment former une phrase. Chaque règle définit un élément du langage à partir d'éléments plus simples. Traditionnellement, on l'écrit dans la notation BNF (*Backus-Naur Form*) ou sa variante étendue EBNF. À titre d'exemple, voici [la grammaire complète du langage C en BNF](https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm).
+
+En C++, une bibliothèque populaire est [cpp-peglib](https://github.com/yhirose/cpp-peglib). Elle est dite *header-only* : tout tient dans un seul fichier d'en-tête, `peglib.h`, qu'il suffit de copier à côté de son code et d'inclure. Pas de compilation séparée, pas d'installation. Elle utilise une notation proche de l'EBNF, appelée PEG (*Parsing Expression Grammar*).
+
+### Exemple : une calculatrice
+
+Le programme [parser/parse.cpp](parser/parse.cpp) évalue une expression arithmétique passée en ligne de commande :
+
+```console
+$ make
+$ ./parse "2 * (3 + 4) - 10 / 4"
+11.5
+$ ./parse "2 + * 3"
+Expression invalide : 2 + * 3
+```
+
+On commence par décrire la grammaire, directement sous forme de chaîne de caractères :
+
+```text
+Expr    <- Term (AddOp Term)*
+Term    <- Factor (MulOp Factor)*
+Factor  <- Number / '(' Expr ')' / '-' Factor
+AddOp   <- < [-+] >
+MulOp   <- < [*/] >
+Number  <- < [0-9]+ ('.' [0-9]+)? >
+%whitespace <- [ \t]*
+```
+
+Elle se lit de haut en bas :
+
+- Une **expression** est un terme, suivi de zéro ou plusieurs fois (`*`) un `+` ou un `-` et un autre terme.
+- Un **terme** est un facteur, suivi de zéro ou plusieurs fois un `*` ou un `/` et un autre facteur.
+- Un **facteur** est soit (`/`) un nombre, soit une expression entre parenthèses, soit un `-` suivi d'un facteur (le moins unaire, comme dans `-3`).
+- Un **nombre** est une suite de chiffres (`[0-9]+`), éventuellement suivie (`?`) d'un point et d'une partie décimale.
+- `%whitespace` indique que les espaces et tabulations peuvent apparaître entre les éléments et doivent être ignorés.
+
+Les chevrons `< >` délimitent le texte exact qu'on souhaite récupérer (le *token*), par exemple les chiffres du nombre.
+
+Deux remarques importantes sur cette grammaire :
+
+La priorité des opérateurs
+: Elle découle directement de la structure des règles. Comme un `Term` est construit à partir de `Factor`, les `*` et `/` sont regroupés **avant** que les `+` et `-` ne soient considérés. Ainsi `2 + 3 * 4` est compris comme `2 + (3 * 4)`, sans qu'on ait eu à l'écrire explicitement.
+
+La récursivité
+: `Factor` peut contenir une `Expr` entre parenthèses, qui elle-même contient des `Term` et des `Factor`… C'est ce qui permet d'imbriquer les parenthèses à n'importe quelle profondeur.
+
+Reconnaître la forme du texte ne suffit pas : il faut aussi calculer le résultat. Pour cela, on associe à chaque règle une **action**, sous la forme d'une lambda (semaine 7). Lorsque le parseur a reconnu une règle, il appelle l'action correspondante en lui passant les valeurs déjà calculées pour ses sous-éléments (`vs[0]`, `vs[1]`…) :
+
+```cpp
+p["Number"] = [](const peg::SemanticValues& vs) {
+    return vs.token_to_number<double>();  // "3.5" -> 3.5
+};
+p["Factor"] = [](const peg::SemanticValues& vs) {
+    double v = std::any_cast<double>(vs[0]);
+    return vs.choice() == 2 ? -v : v;     // 3e alternative : '-' Factor
+};
+```
+
+Pour `Expr` et `Term`, une même lambda `fold` parcourt la liste `valeur, opérateur, valeur, opérateur, valeur…` de gauche à droite et accumule le résultat. Le sens de parcours est important : `8 - 3 - 2` doit valoir `(8 - 3) - 2 = 3`, et non `8 - (3 - 2) = 7`.
+
+Les valeurs intermédiaires peuvent être de types différents (un `char` pour un opérateur, un `double` pour un nombre). Elles sont donc stockées dans des `std::any`, un type capable de contenir n'importe quelle valeur, et on les récupère avec `std::any_cast<T>`.
+
+Enfin, `p.parse(expr, val)` lance l'analyse : il renvoie `false` si le texte ne respecte pas la grammaire, et place sinon le résultat final dans `val`.
+
+Ce même principe, une grammaire et des actions, est celui qu'utilisent les compilateurs, les interpréteurs (Python, JavaScript) ou les lecteurs de fichiers JSON, simplement avec des grammaires beaucoup plus longues.
